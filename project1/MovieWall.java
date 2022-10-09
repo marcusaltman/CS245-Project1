@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/*
+ * This class is the user interface for Movie Wall. It has a loop to continue prompting the user until they enter "exit." It also has a very basic input
+ * error detection mechanism that tries to guess which actor the user meant if the actor they entered is not found.
+ */
 public class MovieWall {
 	
 	public static void start(ActorDatabase database) {
@@ -11,26 +15,35 @@ public class MovieWall {
 		
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		
-		boolean repeat = true;
+		boolean done = false;
 		
-		while (repeat) {
+		while (!done) {
+			// Prompt the user
 			System.out.print("Enter the name of an actor (or \"Exit\" to quit): ");
 			
 			try {
+				// Get user input and convert it to lower case to facilitate easier searching 
 				String userInput = input.readLine().toLowerCase();
 				
+				// Set the loop exit flag if the user enters "exit"
 				if (userInput.equals("exit")) {
-					repeat = false;
+					done = true;
 					input.close();
 				}
 				else {
-					Actor actor = database.getActor(userInput);
+					// Search the database for the actor
+					Actor actor = database.getActor(userInput); 
 					
-					if (actor.getLowercaseName().equals(userInput)) {
+					// If the actor returned is correct, print their movie list
+					if (actor.getLowercaseName().equals(userInput)) { 
 						System.out.println(actor);
 					}
+					
+					// If the actor returned is incorrect, check if the returned actor was the intended actor
 					else {
 						System.out.print("No such actor. Did you mean " + actor.getName() + " (Y/N)? ");
+						
+						// If the returned actor was the intended actor, print their movie list 
 						if (input.readLine().equalsIgnoreCase("Y")) {
 							System.out.println(actor);
 						}
