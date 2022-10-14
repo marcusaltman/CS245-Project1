@@ -13,11 +13,19 @@ public class ActorDatabase {
 	private ArrayList<Actor> allActors = new ArrayList<>();
 	
 	
-	// Creates a database and fills it with all of the actors in the file
+	/**
+	 * This constructor calls parseCSV to extract the data from a csv file to build an ActorDatabase
+	 * @param file A string that represents the location of the csv file
+	 */
 	public ActorDatabase(String file) {
 		parseCSV(new File(file));
 	}
 	
+	/**
+	 * This method adds a new Actor to the database or amends an existing actor's movie list
+	 * @param name The name of an actor to be added or amended
+	 * @param movie The name of the movie the actor starred in
+	 */
 	public void addToDatabase(String name, Movie movie) {
 		// Check to see if an actor is already in the array
 		if (allActors.size() == 0) {
@@ -85,6 +93,10 @@ public class ActorDatabase {
 		return mid;
 	}
 	
+	/**
+	 * This method parses the csv file and calls the parseJSON method to parse the JSON data
+	 * @param file The File object that represents the IMDB csv file
+	 */
 	private void parseCSV(File file) {
 		try (Scanner scan = new Scanner(file)) {
 			if (scan.hasNext()) {
@@ -113,7 +125,12 @@ public class ActorDatabase {
 		}
 	}
 	
-	
+	/**
+	 * This method parses and removes the desired information from the JSON data in the csv file
+	 * @param movie The movie that the cast is from
+	 * @param cast The cast of the specified movie provided as a string of JSON data
+	 * @return Returns false if the cast field in the csv file was empty or true when the cast has been parsed and added to the database
+	 */
 	private boolean parseJSON(Movie movie, String cast) {
 		cast = decode(cast); //Decodes Unicode escape sequences
 		
