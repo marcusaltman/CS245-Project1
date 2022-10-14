@@ -16,8 +16,6 @@ public class ActorDatabase {
 	// Creates a database and fills it with all of the actors in the file
 	public ActorDatabase(String file) {
 		parseCSV(new File(file));
-		System.out.println(allActors.size()); // For Testing
-
 	}
 	
 	public void addToDatabase(String name, Movie movie) {
@@ -104,8 +102,8 @@ public class ActorDatabase {
 				
 				// Saves the JSON cast field and sends it to be parsed
 				String cast = scan.useDelimiter("}]").next(); // Saves the entire cast field as a string
-				if (parseJSON(movie, cast)) {
-					scan.useDelimiter("\n").next(); // Reads and discards the crew ***THIS WILL CAUSE AN ISSUE
+				if (parseJSON(movie, cast)) { // Condition is false if their is no cast to parse
+					scan.useDelimiter("\n").next(); // Reads and discards the crew
 				}
 			}
 			scan.close();
